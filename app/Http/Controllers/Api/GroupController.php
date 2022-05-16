@@ -3,73 +3,41 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Group;
-use App\Models\Student;
 use App\Http\Requests\GroupRequest;
+use App\Repositories\GroupRepositoryContract;
 
 class GroupController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    private $groupRepository;
+
+    public function __construct(GroupRepositoryContract $groupRepository)
+    {
+        $this->groupRepository = $groupRepository;
+    }
+
     public function index()
     {
-        return Group::all();
+        return $this->groupRepository->all();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(GroupRequest $request)
     {
-        $group = Group::create($request->validated());
-        return $group;
+        return $this->groupRepository->create($request->validated()); 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Group $group)
+    public function show(int $id)
     {
-        $group->students;
-        return $group;
+        return $this->groupRepository->show($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(GroupRequest $request, $id)
+    public function update(GroupRequest $request, int $id)
     {
-        $group = Group::findOrFail($id);
-        $group->fill($request->except(['id']));
-        $group->save();
-        return $group;  
+        return $this->groupRepository->update($request->validated(), $id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Group $group)
+    public function destroy(int $id)
     {
-        Student::where('group_id', $group->id)
-            ->update(['group_id' => null]);
-        $group->delete();
-        return ['message' => 'Group deleted'];
+        return $this->groupRepository->destroy($id);
     }
 
     /**
@@ -77,9 +45,9 @@ class GroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function schedule($id)
-    {
-        $group = Group::with('lectures')->find($id);
-        return $group;
-    }    
+    // public function schedule($id)
+    // {
+    //     $group = Group::with('lectures')->find($id);
+    //     return $group;
+    // }    
 }

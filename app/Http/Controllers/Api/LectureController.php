@@ -3,72 +3,41 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Lecture;
 use App\Http\Requests\LectureRequest;
+use App\Repositories\LectureRepositoryContract;
 
 class LectureController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    private $lectureRepository;
+
+    public function __construct(LectureRepositoryContract $lectureRepository)
+    {
+        $this->lectureRepository = $lectureRepository;
+    }
+
     public function index()
     {
-        return Lecture::all();
+        return $this->lectureRepository->all();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(LectureRequest $request)
     {
-        $lecture = Lecture::create($request->validated());
-        return $lecture;
+        return $this->lectureRepository->create($request->validated()); 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Lecture $lecture)
+    public function show(int $id)
     {
-        foreach($lecture->groups as $group) {
-            $group->students;
-        }
-        return $lecture;
+        return $this->lectureRepository->show($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(LectureRequest $request, $id)
+    public function update(LectureRequest $request, int $id)
     {
-        $lecture = Lecture::findOrFail($id);
-        $lecture->fill($request->except(['id']));
-        $lecture->save();
-        return $lecture;  
+        return $this->lectureRepository->update($request->validated(), $id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Lecture $lecture)
+    public function destroy(int $id)
     {
-        $lecture->delete();
-        return ['message' => 'Lecture deleted'];
+        return $this->lectureRepository->destroy($id);
     }
 }
