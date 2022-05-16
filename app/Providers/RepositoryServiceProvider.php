@@ -15,6 +15,8 @@ use App\Repositories\LectureRepositoryContract;
 use App\Repositories\Eloquent\LectureRepository;
 use App\Repositories\ScheduleRepositoryContract;
 use App\Repositories\Eloquent\ScheduleRepository;
+use App\Repositories\GroupLectureRepositoryContract;
+use App\Repositories\Eloquent\GroupLectureRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -26,5 +28,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(StudentRepositoryContract::class, StudentRepository::class);
         $this->app->singleton(LectureRepositoryContract::class, LectureRepository::class);
         $this->app->singleton(ScheduleRepositoryContract::class, ScheduleRepository::class);
+        $this->app->singleton(GroupLectureRepositoryContract::class, GroupLectureRepository::class);
     }
 }
