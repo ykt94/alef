@@ -2,6 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\StudentController;
+use App\Http\Controllers\Api\GroupController;
+use App\Http\Controllers\Api\LectureController;
+use App\Http\Controllers\Api\ScheduleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +21,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::apiResources([
+    'students' => StudentController::class,
+    'groups' => GroupController::class,
+    'lectures' => LectureController::class,
+]);
+
+Route::apiResource('schedule', ScheduleController::class)->only(['show', 'store']);

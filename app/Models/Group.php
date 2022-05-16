@@ -9,6 +9,8 @@ class Group extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name'];
+
     public function students()
     {
         return $this->hasMany(Student::class);
@@ -16,6 +18,7 @@ class Group extends Model
 
     public function lectures()
     {
-        return $this->belongsToMany(Student::class)->withPivot('schedule');
+        return $this->belongsToMany(Lecture::class)->withPivot('schedule');
     }
+
 }

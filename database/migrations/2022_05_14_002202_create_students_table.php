@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->foreignId('group_id')->constrained();
+            $table->foreignId('group_id')->constrained()->nullable();
             $table->timestamps();
         });
     }
